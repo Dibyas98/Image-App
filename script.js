@@ -26,22 +26,30 @@ foemEle.addEventListener("submit", function (event) {
 
 });
 
-async function imges() {
-    let search = inputEle.value;
-    
-    try {
-        const url = `https://api.unsplash.com/search/photos?page=${page}&query=${search}&client_id=${accessKey}`;
+async function urlCall(search){
+    const url = `https://api.unsplash.com/search/photos?page=${page}&query=${search}&client_id=${accessKey}`;
         const response = await fetch(url);
         const data = await response.json();
+        
+        
         // console.log(data);
+        // const res = data.results;
+        // console.log(res);
+    return data;
+}
+
+async function imges() {
+    let search = inputEle.value;
+    try {
+        let data= await urlCall(search);
+        
+        // console.log(data);
+        let res=data.results;
 
 
         if (page === 1) {
             all_photo.innerHTML = "";
         }
-
-        const res = data.results;
-        console.log(res);
 
         res.map((result) => {
             const single = document.createElement("div");
@@ -84,3 +92,42 @@ show_More.addEventListener('click', function () {
     }, 3000);
 
 })
+
+
+
+
+
+
+
+
+
+
+// Function to open the lightbox
+function openLightbox(imageSrc) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const closeLightboxButton = document.getElementById('close-lightbox');
+
+    lightboxImage.src = imageSrc;
+    lightbox.style.display = 'block';
+
+    // Close the lightbox when clicking the close button
+    closeLightboxButton.onclick = function() {
+        lightbox.style.display = 'none';
+    }
+
+    // Close the lightbox when clicking outside the image
+    lightbox.onclick = function(event) {
+        if (event.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    }
+}
+
+// Event listener for clicking an image
+document.querySelector('.image-container').addEventListener('click', (event) => {
+    if (event.target.tagName === 'IMG') {
+        openLightbox(event.target.src);
+    }
+});
+
