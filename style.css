@@ -168,7 +168,7 @@ form button{
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1;
     text-align: center;
-    border: 2px solid black;
+    /* border: 2px solid black; */
 }
 
 #lightbox img {
